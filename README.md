@@ -4,8 +4,6 @@ A curated list of papers, datasets, benchmarks, and resources for **Video Copy L
 
 ## Overview
 
-A typical Video Copy Localization pipeline can be summarized as:
-
 ```text
 Video Pair
    ↓
@@ -24,64 +22,31 @@ Boundary Refinement
 Copied Segments
 ```
 
-Existing work mainly improves one or more of the following components:
-
-- Frame sampling
-- Visual representation
-- Local / regional matching
-- Similarity-map construction
-- Temporal alignment
-- Boundary localization
-- Candidate retrieval
-- Sparse matching
-- Multimodal matching
-- Efficient representation
-
 ---
 
 # Datasets & Benchmarks
 
-## VCSL
+## VCSL — CVPR 2022
 
-**A Large-Scale Comprehensive Dataset and Copy-Overlap Aware Evaluation Protocol for Segment-Level Video Copy Detection**  
-CVPR 2022
+**A Large-Scale Comprehensive Dataset and Copy-Overlap Aware Evaluation Protocol for Segment-Level Video Copy Detection**
 
-- Large-scale benchmark for segment-level video copy localization.
+- Large-scale segment-level video copy benchmark.
 - Provides copied segment annotations.
 - Introduces copy-overlap-aware evaluation.
-- Widely used by subsequent VCL methods.
-
-```text
-Dataset / Benchmark
-```
-
-Repository: `alipay/VCSL`
-
----
 
 ## FiGVCL
 
 **Fine-Grained Video Copy Localization**
 
-- Focuses on fine-grained temporal correspondence.
-- Designed for realistic video transformations and editing.
-- Introduces more detailed temporal correspondence evaluation.
-
-```text
-Coarse Segment Annotation
-        ↓
-Fine-Grained Temporal Correspondence
-```
+- Fine-grained temporal correspondence.
+- Realistic transformations and editing.
+- More detailed temporal correspondence evaluation.
 
 ---
 
 # Core Video Copy Localization
 
 ## VSAL
-
-**Video Similarity and Alignment Learning**
-
-### Pipeline
 
 ```text
 Frame Features
@@ -95,20 +60,11 @@ Partial Alignment
 Copied Segment
 ```
 
-### Main Idea
-
-Instead of directly applying conventional alignment algorithms to a cosine-similarity matrix, VSAL learns:
-
-- whether a location belongs to an alignment path;
-- how the alignment path should move.
-
-**Modified component:** Temporal alignment.
+**Modified:** Temporal alignment.
 
 ---
 
 ## SPD / SSAN
-
-### Pipeline
 
 ```text
 Video
@@ -124,66 +80,38 @@ Similarity Matrix
 Copied Segment
 ```
 
-### Main Idea
-
-Treat diagonal copy patterns in the similarity matrix as a detection problem.
-
-**Modified components:**
-
-- Frame sampling
-- Temporal localization
+**Modified:** Sampling + temporal localization.
 
 ---
 
-## TransVCL
-
-**Transformer Based Video Copy Localization**  
-AAAI 2023
-
-### Pipeline
+## TransVCL — AAAI 2023
 
 ```text
 Frame Features
    ↓
-[Modified] Self-Attention
-   ↓
-[Modified] Cross-Attention
+[Modified] Self-Attention / Cross-Attention
    ↓
 Enhanced Features
    ↓
-[Modified] Correlation / Similarity Map
+[Modified] Correlation Map
    ↓
 Temporal Alignment
    ↓
 Copied Segment
 ```
 
-### Main Idea
-
-The two videos interact through Transformer attention before constructing the similarity representation.
-
-**Modified components:**
-
-- Feature enhancement
-- Similarity-map construction
+**Modified:** Feature enhancement + similarity construction.
 
 ---
 
-## RTR
-
-**Regional Token Representation for Video Copy Localization**  
-ECCV 2024
-
-### Pipeline
+## RTR — ECCV 2024
 
 ```text
 Frames
    ↓
-Vision Transformer
+ViT
    ↓
-Global Token
-   +
-[Modified] Regional Tokens
+Global Token + [Modified] Regional Tokens
    ↓
 Similarity Matrix
    ↓
@@ -192,68 +120,33 @@ Temporal Detector
 Copied Segment
 ```
 
-Training additionally introduces:
-
-```text
-[Modified] Transitivity-Based Self-Supervision
-```
-
-### Main Idea
-
-A single global representation per frame may fail under:
-
-- cropping;
-- picture-in-picture;
-- partial-region copying.
-
-RTR therefore introduces regional representations.
-
-**Modified components:**
-
-- Frame representation
-- Training strategy
+**Modified:** Regional representation + self-supervised training.
 
 ---
 
 ## iESTA
-
-**Instance-Enhanced Spatial-Temporal Alignment for Video Copy Localization**
-
-### Pipeline
 
 ```text
 Frames
    ↓
 Global Features
    +
-[Modified] Instance-Level Features
+[Modified] Instance Features
    ↓
 Instance Relation Graph
    ↓
 Temporal Transformer
    ↓
-[Modified] Cross-Level Feature Fusion
+Feature Fusion
    ↓
 Alignment
-   ↓
-Copied Segment
 ```
 
-### Main Idea
-
-Combine global visual correspondence with object / instance-level correspondence.
-
-**Modified components:**
-
-- Representation
-- Spatial matching
-- Temporal matching
+**Modified:** Instance-level spatial-temporal representation.
 
 ---
 
 ## FiGVCL
-
-### Pipeline
 
 ```text
 Frames
@@ -267,59 +160,29 @@ Temporal Correspondence
 Copied Segment
 ```
 
-### Main Idea
-
-Move from coarse frame-level matching toward fine-grained spatial and temporal correspondence.
-
-**Modified components:**
-
-- Local representation
-- Matching granularity
-- Evaluation protocol
+**Modified:** Local representation + fine-grained matching.
 
 ---
 
 ## VCDT
 
-**Video Copy Detection Transformer**
-
-### Pipeline
-
 ```text
 Similarity Representation
    ↓
-[Modified] Transformer Encoder
-   ↓
-[Modified] Transformer Decoder
+[Modified] Transformer Encoder-Decoder
    ↓
 Segment Queries
    ↓
 Boundary + Confidence
 ```
 
-### Main Idea
-
-Replace traditional:
-
-```text
-Similarity Matrix
-   ↓
-DP / DTW
-```
-
-with a DETR-like segment detector.
-
-**Modified component:** Temporal localization.
+**Modified:** Temporal localization.
 
 ---
 
 # Efficient Video Copy Localization & Detection
 
-## Fast Partial Video Copy Detection
-
-WACV 2022
-
-### Pipeline
+## Fast Partial Video Copy Detection — WACV 2022
 
 ```text
 Reference Frames
@@ -328,10 +191,7 @@ CNN Features
    ↓
 [Modified] Global KNN / ANN Index
    ↓
-
-Query Frames
-   ↓
-KNN Search
+Query Search
    ↓
 Candidate Videos
    ↓
@@ -340,117 +200,71 @@ Temporal Matching
 Copied Segment
 ```
 
-### Main Idea
-
-Avoid comparing a query video with every reference video.
-
-Candidate frames / videos are retrieved first, followed by temporal matching.
-
-**Modified component:** Candidate retrieval.
+**Modified:** Candidate retrieval.
 
 ---
 
-## Fast Video Deduplication and Localization with Temporal Consistence Re-Ranking
+## Fast Video Deduplication and Localization with Temporal Consistence Re-Ranking — TCSVT 2024
 
-TCSVT 2024
-
-### Offline Pipeline
+### Offline
 
 ```text
 Database Videos
    ↓
-Frame Sampling
-   ↓
-Fisher Vector
-VGG Feature
-Thumbnail Feature
+Fisher / VGG / Thumbnail
    ↓
 PCA
    ↓
-[Modified] Three Independent k-d Trees
+[Modified] Independent k-d Trees
 ```
 
-### Online Pipeline
+### Online
 
 ```text
 Query Frames
    ↓
-Feature Extraction
-   ↓
 k-d Tree KNN Search
    ↓
-Sparse Candidate Frame Matches
+Sparse Candidate Matches
    ↓
 [Modified] Video-ID Consistency
    ↓
-[Modified] Temporal Consistency Pruning
+[Modified] Temporal Consistency
    ↓
-Video ID
-   +
-Temporal Location
+Video ID + Temporal Location
 ```
 
-### Main Idea
-
-Avoid constructing a complete frame-to-frame similarity matrix.
-
-Instead:
-
-```text
-Dense M × N Matching
-        ↓
-Sparse M × K Matching
-```
-
-Temporal consistency is then used to remove isolated false matches and recover the corresponding video segment.
-
-**Modified components:**
-
-- Candidate retrieval
-- Sparse frame matching
-- Temporal consistency
+**Modified:** Sparse retrieval + temporal consistency.
 
 ---
 
 ## MLT-Dedup
 
-### Pipeline
-
 ```text
-Large Video Repository
+Video Repository
    ↓
-[Modified] Multi-Level Video Representation
+[Modified] Multi-Level Representation
    ↓
-Sparse Clip Embeddings
+Sparse Clip Embedding
    ↓
 HNSW Retrieval
    ↓
 Candidate Videos
    ↓
-Load Fine-Grained Frame Features
+Frame-Level Features
    ↓
 [Modified] Spatial-Temporal Matching
    ↓
 Duplicated Segment
 ```
 
-### Main Idea
-
-Use lightweight clip-level representations for large-scale retrieval and fine-grained frame representations only for candidate videos.
-
-**Modified components:**
-
-- Hierarchical representation
-- Candidate retrieval
-- Fine-grained verification
+**Modified:** Hierarchical retrieval + fine matching.
 
 ---
 
 # Efficient Video Representation
 
 ## Extremely Compact Video Representation
-
-### Pipeline
 
 ```text
 Video
@@ -459,31 +273,16 @@ Video
    ↓
 Keyframe Selection
    ↓
-[Modified] Miniature Frames
+[Modified] Miniature Frame
    ↓
 Lightweight Siamese Network
    ↓
 Compact Descriptor
 ```
 
-### Main Idea
-
-Reduce computational and storage costs through:
-
-- fewer frames;
-- lower image resolution;
-- compact descriptors.
-
-**Modified components:**
-
-- Sampling
-- Representation
-
 ---
 
 ## Temporal-Attack-Aware Frame Selection
-
-### Pipeline
 
 ```text
 Video
@@ -495,111 +294,71 @@ Representative Frames
 Standard VCD Pipeline
 ```
 
-### Main Idea
-
-Select representative frames according to temporal visual changes rather than uniform sampling.
-
-**Modified component:** Frame sampling.
-
 ---
 
-## Logic Gate Network for Video Copy Detection
-
-### Pipeline
+## Logic Gate Network
 
 ```text
 Frame
    ↓
-[Modified] Miniaturization / Binary Preprocessing
+Miniaturization
    ↓
 [Modified] Logic Gate Network
    ↓
-Binary / Boolean Descriptor
+Boolean Descriptor
    ↓
 Fast Matching
 ```
-
-### Main Idea
-
-Replace expensive floating-point feature extraction with lightweight Boolean computation.
-
-**Modified component:** Feature extraction.
 
 ---
 
 # Video Similarity Representation
 
-## ViSiL
-
-ICCV 2019
-
-### Pipeline
+## ViSiL — ICCV 2019
 
 ```text
 Frames
    ↓
 Regional CNN Features
    ↓
-Frame-to-Frame Similarity
+Frame Similarity
    ↓
 [Modified] Chamfer Similarity
    ↓
-[Modified] CNN Similarity Refinement
+[Modified] CNN Refinement
    ↓
-Video Similarity Score
+Video Similarity
 ```
-
-### Main Idea
-
-Learn fine-grained spatial-temporal video similarity rather than using only global video descriptors.
-
-ViSiL primarily addresses video similarity rather than complete segment localization.
 
 ---
 
 ## S²VS
 
-### Pipeline
-
 ```text
 Unlabeled Videos
    ↓
-Self-Supervised Representation Learning
+Self-Supervised Learning
    ↓
-[Modified] Video Similarity Features
+[Modified] Video Similarity Representation
    ↓
 Retrieval / Matching
 ```
-
-### Main Idea
-
-Learn general-purpose video similarity representations using self-supervised learning.
-
-**Modified component:** Representation learning.
 
 ---
 
 ## FCPL
 
-### Pipeline
-
 ```text
-Multiple Visual Backbones
+Multiple Backbones
    ↓
 [Modified] Feature-Compatible Progressive Learning
    ↓
-Compatible Embedding Space
+Compatible Feature Space
    ↓
 Feature Ensemble
    ↓
-Matching / Localization
+Matching
 ```
-
-### Main Idea
-
-Allow representations generated by different models to be directly compared and combined.
-
-**Modified component:** Representation learning.
 
 ---
 
@@ -607,36 +366,17 @@ Allow representations generated by different models to be directly compared and 
 
 ## VCSA
 
-### Standard Supervision
-
 ```text
-Copied Segment
-[start, end]
+Single-Frame Annotation
    ↓
-VCL Training
-```
-
-### VCSA
-
-```text
-[Modified] Single-Frame Annotation
-   ↓
-Weakly-Supervised Learning
+[Modified] Weakly-Supervised Learning
    ↓
 Copied Segment Localization
 ```
 
-### Main Idea
+## RTR
 
-Reduce the cost of temporal segment annotation.
-
-**Modified component:** Training supervision.
-
----
-
-## RTR Self-Supervision
-
-RTR additionally introduces transitivity-based synthetic supervision to reduce reliance on manually annotated copied segments.
+Uses transitivity-based self-supervision to reduce reliance on manually annotated copied segments.
 
 ---
 
@@ -644,41 +384,25 @@ RTR additionally introduces transitivity-based synthetic supervision to reduce r
 
 ## Audio-Visual Video Copy Detection
 
-### Pipeline
-
 ```text
 Video
- ├─ Visual Stream
- └─ Audio Stream
-       ↓
-[Modified] Multimodal Feature Extraction
-       ↓
-[Modified] Cross-Modal / Attention Matching
-       ↓
+ ├─ Visual
+ └─ Audio
+      ↓
+[Modified] Multimodal Features
+      ↓
+Cross-Modal Matching
+      ↓
 Similarity Representation
-       ↓
+      ↓
 Temporal Localization
 ```
 
-### Main Idea
-
-Use audio information as complementary evidence when visual content has undergone significant transformations.
-
-**Modified components:**
-
-- Input modality
-- Representation
-- Matching
-
 ---
 
-# Competition / Challenge Methods
+# Competition Methods
 
 ## SAM
-
-Video Similarity Challenge 2022
-
-### Pipeline
 
 ```text
 Frame Features
@@ -692,39 +416,193 @@ Similarity Map
 Copied Segment
 ```
 
-### Main Idea
-
-```text
-Align → Refine
-```
-
----
-
 ## Dual-Level Detection
-
-### Pipeline
 
 ```text
 Video
-   ├───────────────┐
-   ↓               ↓
-Video-Level      Frame-Level
-Detection        Scene Detection
-   │               │
-   └───────┬───────┘
-           ↓
+ ├─ Video-Level Detection
+ └─ Frame-Level Scene Detection
+          ↓
       Copy Decision
 ```
 
-### Main Idea
+---
 
-Combine coarse video-level and detailed frame-level evidence.
+# Method Taxonomy
+
+```text
+Video
+ │
+ ▼
+① Frame Sampling
+ │
+ ├── Uniform Sampling
+ │     ├── VCSL baselines
+ │     ├── TransVCL
+ │     └── RTR
+ │
+ ├── Keyframe Selection
+ │     ├── SPD / SSAN
+ │     └── Extremely Compact Video Representation
+ │
+ └── Inter-Frame Difference
+       ├── Extremely Compact Video Representation
+       └── Temporal-Attack-Aware Frame Selection
+ │
+ ▼
+② Feature Extraction / Representation
+ │
+ ├── Global CNN Features
+ │     ├── ViSiL
+ │     ├── Fast Partial Video Copy Detection
+ │     └── Fast Video Deduplication
+ │
+ ├── Transformer / ViT Features
+ │     ├── TransVCL
+ │     └── RTR
+ │
+ ├── Regional Features
+ │     ├── ViSiL
+ │     ├── RTR
+ │     └── FiGVCL
+ │
+ ├── Instance-Level Features
+ │     └── iESTA
+ │
+ ├── Self-Supervised Features
+ │     ├── S²VS
+ │     ├── SPD / SSAN
+ │     └── RTR
+ │
+ ├── Multi-Backbone Features
+ │     └── FCPL
+ │
+ ├── Compact Features
+ │     ├── Extremely Compact Video Representation
+ │     └── Logic Gate Network
+ │
+ └── Multimodal Features
+       └── Audio-Visual Video Copy Detection
+ │
+ ▼
+③ Candidate Retrieval
+ │
+ ├── KNN
+ │     └── Fast Partial Video Copy Detection
+ │
+ ├── k-d Tree
+ │     └── Fast Video Deduplication and Localization
+ │
+ ├── FAISS / ANN
+ │     └── Fast Partial Video Copy Detection
+ │
+ └── HNSW
+       └── MLT-Dedup
+ │
+ ▼
+④ Frame / Region Matching
+ │
+ ├── Cosine Similarity
+ │     ├── VCSL baselines
+ │     ├── TransVCL baseline pipeline
+ │     └── Fast retrieval methods
+ │
+ ├── Chamfer Similarity
+ │     └── ViSiL
+ │
+ ├── Learned Correlation
+ │     ├── TransVCL
+ │     └── VSAL
+ │
+ ├── Regional Matching
+ │     ├── RTR
+ │     └── FiGVCL
+ │
+ ├── Instance-Level Matching
+ │     └── iESTA
+ │
+ └── Multimodal Matching
+       └── Audio-Visual Video Copy Detection
+ │
+ ▼
+⑤ Similarity Representation
+ │
+ ├── Dense Similarity Matrix
+ │     ├── VSAL
+ │     ├── SPD
+ │     ├── TransVCL
+ │     ├── RTR
+ │     ├── iESTA
+ │     └── FiGVCL
+ │
+ ├── Refined Similarity Matrix
+ │     ├── ViSiL
+ │     └── TransVCL
+ │
+ └── Sparse Correspondences
+       ├── Fast Partial Video Copy Detection
+       ├── Fast Video Deduplication
+       └── MLT-Dedup
+ │
+ ▼
+⑥ Temporal Alignment / Detection
+ │
+ ├── Dynamic Programming
+ │     └── Traditional VCL / VCSL baselines
+ │
+ ├── DTW
+ │     └── Traditional VCL baselines
+ │
+ ├── SPD / Pattern Detection
+ │     └── SPD / SSAN
+ │
+ ├── Mask + Step Prediction
+ │     └── VSAL
+ │
+ ├── Transformer Alignment
+ │     ├── TransVCL
+ │     └── iESTA
+ │
+ ├── Transformer Segment Detection
+ │     └── VCDT
+ │
+ ├── Align → Refine
+ │     └── SAM
+ │
+ ├── Temporal Consistency
+ │     ├── Fast Video Deduplication and Localization
+ │     └── MLT-Dedup
+ │
+ └── Fine-Grained Temporal Correspondence
+       └── FiGVCL
+ │
+ ▼
+⑦ Boundary Localization / Refinement
+ │
+ ├── DP / Alignment Boundary
+ │     └── Traditional VCL
+ │
+ ├── Detection-Based Boundary
+ │     ├── SPD
+ │     └── VCDT
+ │
+ ├── Alignment Refinement
+ │     ├── SAM
+ │     └── TransVCL
+ │
+ ├── Temporal-Chain Boundary
+ │     └── Fast Video Deduplication and Localization
+ │
+ └── Fine-Grained Boundary
+       └── FiGVCL
+ │
+ ▼
+Copied Segment
+```
 
 ---
 
-# Related Task: Video Deduplication
-
-Video Copy Localization and Video Deduplication share many components but optimize different outputs.
+# Related Tasks
 
 ## Video Deduplication
 
@@ -738,10 +616,6 @@ Duplicate Retrieval
 Duplicate / Non-Duplicate
 ```
 
-Main question:
-
-> Is this video already present in the repository?
-
 ## Video Copy Localization
 
 ```text
@@ -754,72 +628,6 @@ Copy Matching
 [startB, endB]
 ```
 
-Main question:
-
-> Which temporal segment of Video A corresponds to which temporal segment of Video B?
-
----
-
-# Method Taxonomy
-
-```text
-Video
- │
- ▼
-Frame Sampling
- │
- ├── Uniform Sampling
- ├── Keyframe Selection
- └── Inter-Frame Difference
- │
- ▼
-Feature Extraction
- │
- ├── CNN / ViT
- ├── Regional Tokens
- ├── Instance Features
- ├── Compact Features
- └── Multimodal Features
- │
- ▼
-Candidate Retrieval
- │
- ├── KNN
- ├── k-d Tree
- ├── FAISS
- └── HNSW
- │
- ▼
-Frame Matching
- │
- ├── Cosine Similarity
- ├── Learned Correlation
- ├── Local / Regional Matching
- └── Multimodal Matching
- │
- ▼
-Similarity Representation
- │
- ├── Dense Similarity Matrix
- └── Sparse Correspondences
- │
- ▼
-Temporal Alignment / Detection
- │
- ├── DP
- ├── DTW
- ├── SPD
- ├── Mask / Step Prediction
- ├── Transformer Detection
- └── Temporal Consistency
- │
- ▼
-Boundary Refinement
- │
- ▼
-Copied Segment
-```
-
 # Topics
 
-`video-copy-localization` · `video-copy-detection` · `partial-video-copy-detection` · `video-similarity` · `video-deduplication` · `temporal-alignment` · `near-duplicate-video-retrieval` · `video-retrieval`
+`video-copy-localization` · `video-copy-detection` · `partial-video-copy-detection` · `video-similarity` · `video-deduplication` · `temporal-alignment` · `near-duplicate-video-retrieval`
