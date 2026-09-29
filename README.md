@@ -1,5 +1,3 @@
-# awesome-video-copy-localization
-
 # Awesome Video Copy Localization
 
 A curated list of papers, datasets, benchmarks, and resources for **Video Copy Localization (VCL)**, **Partial Video Copy Detection (PVCD)**, **Video Copy Detection (VCD)**, and related video deduplication tasks.
